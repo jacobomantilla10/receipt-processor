@@ -22,19 +22,19 @@ def process():
         if 'retailer' in request_data:
             receipt_object['retailer'] = request_data['retailer']
         else:
-            return 'Req body missing retailer', 422
+            return 400
 
         if 'purchaseDate' in request_data:
             receipt_object['purchase_date'] = date.fromisoformat(
                 request_data['purchaseDate'])
         else:
-            return 'Req body missing date', 422
+            return 400
 
         if 'purchaseTime' in request_data:
             receipt_object['purchase_time'] = time.fromisoformat(
                 request_data['purchaseTime'])
         else:
-            return 'Req body missing time', 422
+            return 400
 
         if 'items' in request_data:
             receipt_object['items'] = []
@@ -45,14 +45,14 @@ def process():
                     'price': float(item['price'])
                 })
         else:
-            return 'Req body missing items', 422
+            return 400
 
         if 'total' in request_data:
             receipt_object['total'] = float(request_data['total'])
         else:
-            return 'Req body missing total', 422
+            return 400
     except:
-        return 'One or more fields were of the wrong type.', 422
+        return 400
 
     new_receipt = Receipt(receipt_object)
     receipts.append(new_receipt)
