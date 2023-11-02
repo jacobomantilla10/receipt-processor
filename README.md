@@ -11,7 +11,7 @@ so data does not survive the application stopping.
 * Payload: Receipt JSON
 * Response: JSON containing an id for the receipt
 
-#### Example of valid Receipt JSON
+#### Example of valid receipt JSON
 
 ```json
 {
