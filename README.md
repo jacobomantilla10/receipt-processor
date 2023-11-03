@@ -69,6 +69,11 @@ Now run a new docker container named receipt-processor
 docker run --name receipt-processor -d -p 5000:5000 receipt-processor
 ```
 
+Alternatively, you can get the image from Docker Hub without having to clone the repo:
+```
+docker run --name receipt-processor -d -p 5000:5000 jacobomantilla10/receipt-processor-api
+```
+
 After a few seconds, our app should be running in localhost at port 5000
 
 We can use curl, postman, or any other tool to interact with the api.
