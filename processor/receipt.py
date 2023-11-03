@@ -22,27 +22,51 @@ class Receipt:
         # Calculate total receipt points
         total_points = 0
 
-        retailer_alphanumeric = re.sub('[^0-9a-zA-Z]+', '', retailer)
-        total_points += len(retailer_alphanumeric)
+        total_points += self.calculate_alphanumeric(retailer)
+        total_points += self.calculate_total_round_points(total)
+        total_points += self.calculate_total_multiple_points(total)
+        total_points += self.calculate_item_total_points(items)
+        total_points += self.calculate_item_value_points(items)
+        total_points += self.calculate_day_points(purchase_date)
+        total_points += self.calculate_time_points(purchase_time)
 
+        return total_points
+    
+    def calculate_retailer_points(retailer):
+        retailer_alphanumeric = re.sub('[^0-9a-zA-Z]', '', retailer)
+        return len(retailer_alphanumeric)
+    
+    def calculate_total_round_points(total):
         if total % 1 == 0.0:
-            total_points += 50
-
+            return 50
+        return 0
+    
+    def calculate_total_multiple_points(total):
         if (total / 0.25) % 1 == 0.0:
-            total_points += 25
-
-        total_points += (len(items) // 2) * 5
-
+            return 25
+        return 0
+    
+    def calculate_item_total_points(items):
+        return (len(items) // 2) * 5
+    
+    def calculate_item_value_points(items):
+        points = 0
         for i in range(len(items)):
             item = items[i]
             if len(item['short_description'].strip()) % 3 == 0:
-                total_points += math.ceil(item['price'] * 0.2)
-        
-        if purchase_date.day % 2 != 0:
-            total_points += 6
+                points += math.ceil(item['price'] * 0.2)
+        return points
+    
+    def calculate_day_points(date):
+        if date.day % 2 != 0:
+            return 6
+        return 0
+    
+    def calculate_time_points(time):
+        if time.hour >= 14 and time.hour < 16:
+            if time.minute != 0:
+                return 10
+        return 0
+    
 
-        if purchase_time.hour >= 14 and purchase_time.hour < 16:
-            if purchase_time.minute != 0:
-                total_points += 10
-
-        return total_points
+    
