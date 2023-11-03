@@ -1,11 +1,9 @@
-import uuid
 import math
 import re
 
 class Receipt:
     # Initializes the receipt object from the JSON object
     def __init__(self, receipt_object):
-        self.id = str(uuid.uuid1())
         self.points = self.calculate_points(receipt_object)
 
     def __str__(self):

@@ -1,11 +1,12 @@
 from flask import Flask, request
 from processor.receipt import Receipt
 from datetime import date, time
+import uuid
 
 app = Flask(__name__)
 
 point_total = 0
-receipts = []
+receipts = {}
 
 # Endpoint to process receipt. Accepts JSON from request and returns new 
 # receipt id
@@ -54,26 +55,18 @@ def process():
     except:
         return 400
 
-    new_receipt = Receipt(receipt_object)
-    receipts.append(new_receipt)
+    receipt_id = str(uuid.uuid1())
+    receipts[receipt_id] = Receipt(receipt_object).points
 
-    return {"id": new_receipt.id}
+    return {"id": receipt_id}
 
 # Endpoint takes in a receipt id and returns the amount of points
 # the receipt accumulated.
 @app.route('/receipts/<id>/points')
 def get_points(id):
-    receipt = None
-
-    for i, r in enumerate(receipts):
-        if r.id == id:
-            receipt = r
-            break
-
-    if not receipt:
-        return 'Unable to find receipt', 404
-
-    return {"points": receipt.points}
+    if id in receipts:
+        return receipts[id].points
+    return 'Unable to find receipt', 404
 
 
 if __name__ == '__main__':
