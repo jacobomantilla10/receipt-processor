@@ -49,8 +49,7 @@ class Receipt:
     
     def calculate_item_value_points(self, items):
         points = 0
-        for i in range(len(items)):
-            item = items[i]
+        for item in items:
             if len(item['short_description'].strip()) % 3 == 0:
                 points += math.ceil(item['price'] * 0.2)
         return points
