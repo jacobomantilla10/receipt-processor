@@ -20,7 +20,7 @@ class Receipt:
         # Calculate total receipt points
         total_points = 0
 
-        total_points += self.calculate_alphanumeric(retailer)
+        total_points += self.calculate_retailer_points(retailer)
         total_points += self.calculate_total_round_points(total)
         total_points += self.calculate_total_multiple_points(total)
         total_points += self.calculate_item_total_points(items)
@@ -30,24 +30,24 @@ class Receipt:
 
         return total_points
     
-    def calculate_retailer_points(retailer):
+    def calculate_retailer_points(self, retailer):
         retailer_alphanumeric = re.sub('[^0-9a-zA-Z]', '', retailer)
         return len(retailer_alphanumeric)
     
-    def calculate_total_round_points(total):
+    def calculate_total_round_points(self, total):
         if total % 1 == 0.0:
             return 50
         return 0
     
-    def calculate_total_multiple_points(total):
+    def calculate_total_multiple_points(self, total):
         if (total / 0.25) % 1 == 0.0:
             return 25
         return 0
     
-    def calculate_item_total_points(items):
+    def calculate_item_total_points(self, items):
         return (len(items) // 2) * 5
     
-    def calculate_item_value_points(items):
+    def calculate_item_value_points(self, items):
         points = 0
         for i in range(len(items)):
             item = items[i]
@@ -55,12 +55,12 @@ class Receipt:
                 points += math.ceil(item['price'] * 0.2)
         return points
     
-    def calculate_day_points(date):
+    def calculate_day_points(self, date):
         if date.day % 2 != 0:
             return 6
         return 0
     
-    def calculate_time_points(time):
+    def calculate_time_points(self, time):
         if time.hour >= 14 and time.hour < 16:
             if time.minute != 0:
                 return 10
